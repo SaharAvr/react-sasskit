@@ -2,9 +2,9 @@
 import _ from 'lodash';
 import md5 from 'md5';
 import React from 'react';
-import sassParser from './sassParser';
+import sassKitParser from './sassKitParser';
 import sassKitElement from './sassKitElement';
-import { DEFALUT_CLASSNAME_PREFIX, DOMAttributes } from './consts';
+import { DEFALUT_CLASSNAME_PREFIX, DOMAttributes } from './sassKitConsts';
 
 const allSuperClasses = {};
 
@@ -58,7 +58,7 @@ const extend = Component => (...args) => {
     
     if (!state.didUpdateSuperClasses) {
 
-      const cssStyle = `${sassParser.parseWithProps(props, ...args)}\n${allSuperClasses[props.className] || ''}`;
+      const cssStyle = `${sassKitParser.parseWithProps(props, ...args)}\n${allSuperClasses[props.className] || ''}`;
       state.className = `${state.componentName}-${md5(cssStyle).substring(0, 5)}`;
       state.didUpdateSuperClasses = true;
 
@@ -81,7 +81,7 @@ export default (() => {
   sassKitElement.prioritize();
   
   return {
-    parse: sassParser.parse,
+    parse: sassKitParser.parse,
     makeStyles,
     extend,
   };

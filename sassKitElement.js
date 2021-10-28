@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import Sass from './sass';
-import { STYLE_ELEMENT_ID } from './consts';
+import Sass from './sass/sass';
+import { STYLE_ELEMENT_ID } from './sassKitConsts';
 
 const sassJs = new Sass();
 

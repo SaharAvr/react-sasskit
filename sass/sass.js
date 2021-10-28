@@ -1,11 +1,11 @@
 /* eslint-disable */
-import sassWorker from './sass.worker';
-
+import sassBlob from './sass.blob';
+import sassWorker from './sass/'
 export default (this, () => {
   
   'use strict';
   
-  const noop = function () {};
+  const noop = () => {};
   const { slice } = [];
   
   function Sass() {
@@ -15,14 +15,17 @@ export default (this, () => {
         this[key] = this[key].bind(this);
       }
     }
-  
-    const blobUrl = URL.createObjectURL(new Blob(['(', sassWorker.toString(), ')()'], { type: 'application/javascript' }));
+
+    const sassWorkerBlob = new Blob(sassBlob.parts, sassBlob.options);
+    const blobUrl = URL.createObjectURL(sassWorkerBlob);
+    const newSassWorker = new Worker(blobUrl);
 
     this._callbacks = {};
-    this._worker = new Worker(blobUrl);
+    this._worker = newSassWorker;
     this._worker.addEventListener('message', this._handleWorkerMessage, false);
     URL.revokeObjectURL(blobUrl);
-  }
+
+  };
   
   Sass.style = {
     nested: 0,
@@ -67,8 +70,6 @@ export default (this, () => {
     },
   
     _importerInit(args) {
-      // importer API done callback pushing results
-      // back to the worker
       const done = function done(result) {
         this._worker.postMessage({
           command: '_importerFinish',
@@ -89,9 +90,8 @@ export default (this, () => {
         throw new Error('importer callback must either be a function or null');
       }
   
-      // callback is executed in the main EventLoop
       this._importer = importerCallback;
-      // tell worker to activate importer callback
+
       this._worker.postMessage({
         command: 'importer',
         args: [Boolean(importerCallback)],
@@ -99,9 +99,10 @@ export default (this, () => {
   
       callback && callback();
     },
-  };
+  }
   
   const commands = 'writeFile readFile listFiles removeFile clearFiles lazyFiles preloadFiles options compile compileFile';
+  
   commands.split(' ').forEach(command => {
     Sass.prototype[command] = function () {
       let callback = slice.call(arguments, -1)[0];
