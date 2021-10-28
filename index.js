@@ -1,1 +1,1 @@
-export { default } from './sassKit';
+export { default } from './src';
