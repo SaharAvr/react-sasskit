@@ -1,6 +1,6 @@
 /* eslint-disable */
 import sassBlob from './sass.blob';
-import sassWorker from './sass/'
+
 export default (this, () => {
   
   'use strict';
@@ -16,8 +16,7 @@ export default (this, () => {
       }
     }
 
-    const sassWorkerBlob = new Blob(sassBlob.parts, sassBlob.options);
-    const blobUrl = URL.createObjectURL(sassWorkerBlob);
+    const blobUrl = URL.createObjectURL(sassBlob.init());
     const newSassWorker = new Worker(blobUrl);
 
     this._callbacks = {};
