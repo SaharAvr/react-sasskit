@@ -1,12 +1,12 @@
 {
   "name": "react-sasskit",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "main": "sassKit.js",
   "license": "MIT",
   "dependencies": {
     "lodash": "4.17.21",
     "md5": "2.3.0",
     "react": "17.0.2",
-    "react-sasskit-blob": "1.0.0"
+    "react-sasskit-blob": "1.0.3"
   }
 }

@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
-import _ from 'lodash';
-import md5 from 'md5';
-import React from 'react';
-import sassKitParser from './sassKitParser';
-import sassKitElement from './sassKitElement';
-import { DEFALUT_CLASSNAME_PREFIX, DOMAttributes } from './sassKitConsts';
+const _ = require('lodash');
+const md5 = require('md5');
+const React = require('react');
+const sassKitParser = require('./sassKitParser');
+const sassKitElement = require('./sassKitElement');
+const { DEFALUT_CLASSNAME_PREFIX, DOMAttributes } = require('./sassKitConsts');
 
 const allSuperClasses = {};
 
@@ -76,7 +76,7 @@ const extend = Component => (...args) => {
 
 };
 
-export default (() => {
+module.exports = (() => {
 
   sassKitElement.prioritize();
   

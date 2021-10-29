@@ -1,10 +1,10 @@
-import _ from 'lodash';
+const _ = require('lodash');
 
-export const STYLE_ELEMENT_ID = 'react-sasskit';
+const STYLE_ELEMENT_ID = 'react-sasskit';
 
-export const DEFALUT_CLASSNAME_PREFIX = _.upperFirst(STYLE_ELEMENT_ID);
+const DEFALUT_CLASSNAME_PREFIX = _.upperFirst(STYLE_ELEMENT_ID);
 
-export const DOMAttributes = [
+const DOMAttributes = [
   'children', 'dangerouslySetInnerHTML', 'onCopy', 'onCopyCapture',
   'onCut', 'onCutCapture', 'onPaste', 'onPasteCapture',
   'onCompositionEnd', 'onCompositionEndCapture', 'onCompositionStart', 'onCompositionStartCapture',
@@ -47,3 +47,9 @@ export const DOMAttributes = [
   'onAnimationEnd', 'onAnimationEndCapture', 'onAnimationIteration', 'onAnimationIterationCapture',
   'onTransitionEnd', 'onTransitionEndCapture',
 ];
+
+module.exports = {
+  STYLE_ELEMENT_ID,
+  DEFALUT_CLASSNAME_PREFIX,
+  DOMAttributes,
+};

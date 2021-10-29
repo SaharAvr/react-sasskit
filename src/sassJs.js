@@ -1,7 +1,7 @@
 /* eslint-disable */
-import sassBlob from 'react-sasskit-blob';
+const sassBlob = require('react-sasskit-blob');
 
-export default new ((this, () => {
+module.exports = new ((this, () => {
   
   'use strict';
   

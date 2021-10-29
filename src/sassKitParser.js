@@ -1,4 +1,4 @@
-import _ from 'lodash';
+const _ = require('lodash');
 
 const parse = (...args) => (
   _.reduce(args[0], (res, line, index) =>
@@ -25,7 +25,7 @@ const parseWithProps = (props, ...args) => {
     `${res}${line}${getSpecialArg(args[index + 1])}`, '');
 };
 
-export default {
+module.exports = {
   parse,
   parseWithProps,
 };

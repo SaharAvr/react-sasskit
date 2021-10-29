@@ -1,7 +1,6 @@
-import _ from 'lodash';
-import sassJs from './sassJs';
-
-import { STYLE_ELEMENT_ID } from './sassKitConsts';
+const _ = require('lodash');
+const sassJs = require('./sassJs');
+const { STYLE_ELEMENT_ID } = require('./sassKitConsts');
 
 const createSassKitElement = () => {
 
@@ -13,15 +12,15 @@ const createSassKitElement = () => {
   return sassKitElement;
   
 };
-  
+
 const getSassKitElement = () => (
   
   document.querySelector(`[data-id="${STYLE_ELEMENT_ID}"]`) ||
     createSassKitElement()
   
 );
-  
-export const prioritizeSassKitElement = () => {
+
+const prioritizeSassKitElement = () => {
   
   const sassKitElement = getSassKitElement();
   
@@ -38,8 +37,8 @@ export const prioritizeSassKitElement = () => {
   observer.observe(document.head, { childList: true, subtree: true });
   
 };
-    
-export const updateSassKitElementWith = superClasses => {
+
+const updateSassKitElementWith = superClasses => {
   
   if (_.isEmpty(superClasses)) {
     return;
@@ -67,7 +66,7 @@ export const updateSassKitElementWith = superClasses => {
   
 };
 
-export default {
+module.exports = {
   prioritize: prioritizeSassKitElement,
   updateWith: updateSassKitElementWith,
 };
