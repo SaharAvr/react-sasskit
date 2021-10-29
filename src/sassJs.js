@@ -1,7 +1,6 @@
 /* eslint-disable */
-const sassBlob = require('react-sasskit-blob');
 
-module.exports = new ((this, () => {
+const WebSass = ((this, () => {
   
   'use strict';
   
@@ -16,6 +15,7 @@ module.exports = new ((this, () => {
       }
     }
 
+    const sassBlob = require('react-sasskit-blob');
     const blobUrl = URL.createObjectURL(sassBlob.init());
     const newSassWorker = new Worker(blobUrl);
 
@@ -120,4 +120,14 @@ module.exports = new ((this, () => {
 
   return Sass;
   
-})())();
+})());
+
+module.exports = (() => {
+
+  if (!Worker) {
+    return require('sass.js/dist/sass.sync');
+  }
+
+  return new WebSass();
+
+})();
