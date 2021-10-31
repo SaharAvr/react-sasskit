@@ -54,8 +54,11 @@ const extend = Component => (...args) => {
 
     }
 
+    const shouldRenderComponent = _.has(Component, 'render');
+    const finalComponent = (shouldRenderComponent ? Component : _.camelCase(_.first(React.Children.toArray(children))));
+
     return React.createElement(
-      Component,
+      finalComponent,
       { ..._.pick(props, DOMAttributes), className: state.className },
       children,
     );
