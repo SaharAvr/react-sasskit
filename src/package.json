@@ -1,6 +1,6 @@
 {
   "name": "react-sasskit",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "main": "sassKit.js",
   "license": "MIT",
   "dependencies": {
