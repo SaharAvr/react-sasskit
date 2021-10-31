@@ -6,18 +6,6 @@ const sassKitParser = require('./sassKitParser');
 const sassKitElement = require('./sassKitElement');
 const { DEFALUT_CLASSNAME_PREFIX, DOMAttributes } = require('./sassKitConsts');
 
-const allSuperClasses = {};
-
-const updateSuperClasses = superClasses => {
-
-  _.forEach(superClasses, (cssStyle, className) => {
-    allSuperClasses[className] = cssStyle;
-  });
-
-  sassKitElement.updateWith(allSuperClasses);
-
-};
-
 const makeStyles = superClasses => {
 
   if (_.isEmpty(superClasses)) {
@@ -32,7 +20,7 @@ const makeStyles = superClasses => {
     return {};
   }
 
-  updateSuperClasses(superClasses);
+  sassKitElement.updateWith(superClasses);
 
   const styles = _.reduce(superClasses, (res, value, key) => {
     res[key] = key;
@@ -58,11 +46,11 @@ const extend = Component => (...args) => {
     
     if (!state.didUpdateSuperClasses) {
 
-      const cssStyle = `${sassKitParser.parseWithProps(props, ...args)}\n${allSuperClasses[props.className] || ''}`;
+      const cssStyle = `${sassKitParser.parseWithProps(props, ...args)}\n${_.get(sassKitElement.superClasses, props.className, '')}`;
       state.className = `${state.componentName}-${md5(cssStyle).substring(0, 5)}`;
       state.didUpdateSuperClasses = true;
 
-      updateSuperClasses({ [state.className]: cssStyle });
+      sassKitElement.updateWith({ [state.className]: cssStyle });
 
     }
 
@@ -78,7 +66,7 @@ const extend = Component => (...args) => {
 
 module.exports = (() => {
 
-  sassKitElement.prioritize();
+  sassKitElement.init();
   
   return {
     parse: sassKitParser.parse,

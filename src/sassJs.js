@@ -122,12 +122,6 @@ const WebSass = ((this, () => {
   
 })());
 
-module.exports = (() => {
-
-  if (!Worker) {
-    return require('sass.js/dist/sass.sync');
-  }
-
-  return new WebSass();
-
-})();
+module.exports = {
+  init: () => new WebSass(),
+};

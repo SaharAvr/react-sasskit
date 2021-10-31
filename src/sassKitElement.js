@@ -1,72 +1,92 @@
 const _ = require('lodash');
-const sassJs = require('./sassJs');
 const { STYLE_ELEMENT_ID } = require('./sassKitConsts');
+const { init: initSassJs } = require('./sassJs');
 
-const createSassKitElement = () => {
+class SassKitElement {
 
-  const sassKitElement = document.createElement('style');
-  sassKitElement.dataset.id = STYLE_ELEMENT_ID;
-  
-  document.head.appendChild(sassKitElement);
-  
-  return sassKitElement;
-  
-};
-
-const getSassKitElement = () => (
-  
-  document.querySelector(`[data-id="${STYLE_ELEMENT_ID}"]`) ||
-    createSassKitElement()
-  
-);
-
-const prioritizeSassKitElement = () => {
-  
-  const sassKitElement = getSassKitElement();
-  
-  const observer = new MutationObserver(() => {
-  
-    if (document.head.lastChild === sassKitElement) {
-      return;
-    }
-  
-    document.head.appendChild(sassKitElement);
-      
-  });
-  
-  observer.observe(document.head, { childList: true, subtree: true });
-  
-};
-
-const updateSassKitElementWith = superClasses => {
-  
-  if (_.isEmpty(superClasses)) {
-    return;
+  constructor() {
+    this.element = null;
+    this.superClasses = null;
+    this.sassJs = null;
+    this.isInitialised = false;
   }
-    
-  const classesInnerHTML = _.chain(superClasses)
-    .reduce((res, cssStyle, className) => (
-      `${res}\n  .${className} {\n  ${cssStyle}\n}`
-    ), '')
-    .trim()
-    .value();
-  
-  sassJs.compile(classesInnerHTML, result => {
-  
-    if (!result.text) {
+
+  init() {
+
+    const isRunningOnBrowser = (typeof window !== 'undefined');
+    if (!isRunningOnBrowser) {
       return;
     }
-  
-    getSassKitElement().innerHTML = _.chain(`\n${result.text}`)
-      .replace(/; }/g, ';\n}')
-      .replace(/\n\s+\.(.*)/g, '\n.$1')
-      .value();
-  
-  });
-  
-};
+    
+    this.create();
+    this.prioritize();
+    this.superClasses = {};
+    this.sassJs = initSassJs();
+    this.isInitialised = true;
 
-module.exports = {
-  prioritize: prioritizeSassKitElement,
-  updateWith: updateSassKitElementWith,
-};
+  }
+
+  create() {
+
+    this.element = document.createElement('style');
+    this.element.dataset.id = STYLE_ELEMENT_ID;
+
+    document.head.appendChild(this.element);
+
+  }
+
+  prioritize() {
+  
+    const observer = new MutationObserver(() => {
+    
+      if (document.head.lastChild === this.element) {
+        return;
+      }
+    
+      document.head.appendChild(this.element);
+        
+    });
+    
+    observer.observe(document.head, { childList: true, subtree: true });
+
+  }
+
+  updateWith(newSuperClasses) {
+
+    if (!this.isInitialised) {
+      return;
+    }
+
+    if (_.isEmpty(newSuperClasses)) {
+      return;
+    }
+
+    _.forEach(newSuperClasses, (cssStyle, className) => {
+      this.superClasses[className] = cssStyle;
+    });
+      
+    const classesInnerHTML = _.chain(this.superClasses)
+      .reduce((res, cssStyle, className) => (
+        `${res}\n  .${className} {\n  ${cssStyle}\n}`
+      ), '')
+      .trim()
+      .value();
+    
+    this.sassJs.compile(classesInnerHTML, result => {
+    
+      if (!result.text) {
+        return;
+      }
+    
+      this.element.innerHTML = _.chain(`\n${result.text}`)
+        .replace(/; }/g, ';\n}')
+        .replace(/\n\s+\.(.*)/g, '\n.$1')
+        .value();
+    
+    });
+
+  }
+
+}
+
+module.exports = new SassKitElement();
