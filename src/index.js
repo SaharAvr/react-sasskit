@@ -48,8 +48,8 @@ class ReactSassKit {
           _.get(Component, 'name', DEFALUT_CLASSNAME_PREFIX)
         ),
         className: '',
-        didUpdateSuperClasses: false,
         finalComponent: null,
+        finalComponentType: null,
         isInitialised: false,
       };
     
@@ -65,7 +65,6 @@ class ReactSassKit {
         settings.finalComponent = getInnerComponent(Component, { children, ...props });
         settings.finalComponentType = _.get(settings.finalComponent, 'type', '').toString();
         settings.className = superClass.className;
-        settings.didUpdateSuperClasses = true;
         settings.isInitialised = true;
 
       };
