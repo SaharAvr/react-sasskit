@@ -1,57 +1,58 @@
 const _ = require('lodash');
-const { STYLE_ELEMENT_ID } = require('./sassKitConsts');
 const { init: initSassJs } = require('./sassJs');
 
-class SassKitElement {
+class SassRenderer {
 
-  constructor() {
-    this.element = null;
-    this.superClasses = null;
-    this.sassJs = null;
-    this.isInitialised = false;
-  }
-
-  init() {
+  constructor(options) {
 
     const isRunningOnBrowser = (typeof window !== 'undefined');
     if (!isRunningOnBrowser) {
       return;
     }
-    
-    this.create();
-    this.prioritize();
+
+    this.elementId = options.elementId;
     this.superClasses = {};
+    this.createElement();
+    this.prioritizeElement();
     this.sassJs = initSassJs();
     this.isInitialised = true;
 
   }
 
-  create() {
+  createElement() {
+
+    if (this.isInitialised) {
+      return;
+    }
 
     this.element = document.createElement('style');
-    this.element.dataset.id = STYLE_ELEMENT_ID;
+    this.element.dataset.id = this.elementId;
 
     document.head.appendChild(this.element);
 
   }
 
-  prioritize() {
-  
+  prioritizeElement() {
+
+    if (this.isInitialised) {
+      return;
+    }
+
     const observer = new MutationObserver(() => {
-    
+
       if (document.head.lastChild === this.element) {
         return;
       }
-    
+
       document.head.appendChild(this.element);
-        
+
     });
-    
+
     observer.observe(document.head, { childList: true, subtree: true });
 
   }
 
-  updateWith(newSuperClasses) {
+  render(newSuperClasses) {
 
     if (!this.isInitialised) {
       return;
@@ -64,29 +65,29 @@ class SassKitElement {
     _.forEach(newSuperClasses, (cssStyle, className) => {
       this.superClasses[className] = cssStyle;
     });
-      
+
     const classesInnerHTML = _.chain(this.superClasses)
       .reduce((res, cssStyle, className) => (
         `${res}\n  .${className} {\n  ${cssStyle}\n}`
       ), '')
       .trim()
       .value();
-    
+
     this.sassJs.compile(classesInnerHTML, result => {
-    
+
       if (!result.text) {
         return;
       }
-    
+
       this.element.innerHTML = _.chain(`\n${result.text}`)
         .replace(/; }/g, ';\n}')
         .replace(/\n\s+\.(.*)/g, '\n.$1')
         .value();
-    
+
     });
 
   }
 
 }
 
-module.exports = new SassKitElement();
+module.exports = SassRenderer;
