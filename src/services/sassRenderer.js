@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { init: initSassJs } = require('./sassJs');
+const SassJs = require('./sassJs');
 
 class SassRenderer {
 
@@ -14,7 +14,7 @@ class SassRenderer {
     this.superClasses = {};
     this.createElement();
     this.prioritizeElement();
-    this.sassJs = initSassJs();
+    this.sassJs = new SassJs();
     this.isInitialised = true;
 
   }

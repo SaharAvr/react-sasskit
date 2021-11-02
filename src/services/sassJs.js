@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-const WebSass = ((this, () => {
+const Sass = ((this, () => {
   
   'use strict';
   
@@ -122,6 +122,4 @@ const WebSass = ((this, () => {
   
 })());
 
-module.exports = {
-  init: () => new WebSass(),
-};
+module.exports = Sass;
