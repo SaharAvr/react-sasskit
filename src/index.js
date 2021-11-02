@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 const React = require('react');
 const _ = require('lodash');
 
