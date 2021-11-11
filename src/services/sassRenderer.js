@@ -11,7 +11,7 @@ class SassRenderer {
     }
 
     this.elementId = options.elementId;
-    this.superClasses = {};
+    this.allSuperClasses = {};
     this.createElement();
     this.prioritizeElement();
     this.sassJs = new SassJs();
@@ -52,39 +52,68 @@ class SassRenderer {
 
   }
 
-  render(newSuperClasses) {
+  render(superClasses) {
 
     if (!this.isInitialised) {
       return;
     }
 
-    if (_.isEmpty(newSuperClasses)) {
+    if (_.isEmpty(superClasses)) {
       return;
     }
 
-    _.forEach(newSuperClasses, (cssStyle, className) => {
-      this.superClasses[className] = cssStyle;
-    });
+    _.forEach(superClasses, (sass, className) => {
 
-    const classesInnerHTML = _.chain(this.superClasses)
-      .reduce((res, cssStyle, className) => (
-        `${res}\n  .${className} {\n  ${cssStyle}\n}`
-      ), '')
-      .trim()
-      .value();
+      const superClassExists = _.has(this.allSuperClasses, className);
+      const isFreeStyleSuperClass = _.startsWith(className, 'FreeStyle-');
 
-    this.sassJs.compile(classesInnerHTML, result => {
-
-      if (!result.text) {
+      if (superClassExists && !isFreeStyleSuperClass) {
         return;
       }
 
-      this.element.innerHTML = _.chain(`\n${result.text}`)
-        .replace(/; }/g, ';\n}')
-        .replace(/\n\s+\.(.*)/g, '\n.$1')
-        .value();
+      this.allSuperClasses[className] = sass;
+
+      this.sassJs.compile(`.${className} { ${sass} }`, result => {
+
+        if (isFreeStyleSuperClass) {
+          this.element.innerHTML = _.replace(this.element.innerHTML, /\s*\.FreeStyle-[^{]+{[^}]+}/g, '');
+        }
+
+        if (!result.text) {
+          delete this.allSuperClasses[className];
+          return;
+        }
+  
+        const newCss = _.chain(`\n${result.text}`)
+          .replace(/; }/g, ';\n}')
+          .replace(/\n\s+\.(.*)/g, '\n\n.$1')
+          .value();
+        
+        this.element.innerHTML = `${this.element.innerHTML || ''}${newCss}`;
+  
+      });
 
     });
+
+    // const combinedSass = _.chain(this.allSuperClasses)
+    //   .reduce((res, sass, className) => (
+    //     `${res}\n  .${className} {\n  ${sass}\n}`
+    //   ), '')
+    //   .trim()
+    //   .value();
+
+    // this.sassJs.compile(combinedSass, result => {
+
+    //   if (!result.text) {
+    //     return;
+    //   }
+
+    //   this.element.innerHTML = _.chain(`\n${result.text}`)
+    //     .replace(/; }/g, ';\n}')
+    //     .replace(/\n\s+\.(.*)/g, '\n.$1')
+    //     .value();
+
+    // });
 
   }
 

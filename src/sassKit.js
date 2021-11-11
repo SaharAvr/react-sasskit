@@ -4,37 +4,13 @@ const _ = require('lodash');
 const SassRenderer = require('./services/sassRenderer');
 const getInnerComponent = require('./utils/getInnerComponent');
 const generateSuperClass = require('./utils/generateSuperClass');
+const generateFreeStyleSuperClass = require('./utils/generateFreeStyleSuperClass');
 const { DEFALUT_CLASSNAME_PREFIX, DOMAttributes, IntrinsicElements, STYLE_ELEMENT_ID } = require('./constants');
 
 class ReactSassKit {
 
   constructor() {
     this.sassRenderer = new SassRenderer({ elementId: STYLE_ELEMENT_ID });
-  }
-
-  makeStyles(superClasses) {
-
-    if (_.isEmpty(superClasses)) {
-      return {};
-    }
-  
-    if (!_.isObject(superClasses)) {
-      return {};
-    }
-  
-    if (!_.every(superClasses, _.isString)) {
-      return {};
-    }
-  
-    this.sassRenderer.render(superClasses);
-  
-    const styles = _.reduce(superClasses, (res, value, key) => {
-      res[key] = key;
-      return res;
-    }, {});
-  
-    return styles;
-  
   }
 
   extend(Component) {
@@ -102,6 +78,40 @@ class ReactSassKit {
 
     };
 
+  }
+
+  freeStyle(...args) {
+
+    const superClass = generateFreeStyleSuperClass({ args });
+    this.sassRenderer.render({ [superClass.className]: superClass.cssStyle });
+
+    return superClass.className;
+
+  }
+
+  makeStyles(superClasses) {
+
+    if (_.isEmpty(superClasses)) {
+      return {};
+    }
+  
+    if (!_.isObject(superClasses)) {
+      return {};
+    }
+  
+    if (!_.every(superClasses, _.isString)) {
+      return {};
+    }
+  
+    this.sassRenderer.render(superClasses);
+  
+    const styles = _.reduce(superClasses, (res, value, key) => {
+      res[key] = key;
+      return res;
+    }, {});
+  
+    return styles;
+  
   }
 
 }

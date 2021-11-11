@@ -1,7 +1,7 @@
 {
   "name": "react-sasskit",
   "version": "1.4.1",
-  "main": "src/index.js",
+  "main": "src/sassKit.js",
   "license": "MIT",
   "dependencies": {
     "child_process": "^1.0.2",
