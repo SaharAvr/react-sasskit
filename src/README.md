@@ -53,22 +53,6 @@ const useStyles = props => sassKit.makeStyles({
   `,
 });
 ```
-
-#
-### > sassKit.freeStyle
-
-This function creates className of scss styles:
-
-```javascript
-<Button
-  className={sassKit.freeStyle`
-    background-color: green;
-    color: white;
-  `}
->
-  I am a free-styled button!
-</Button>
-```
 #
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
