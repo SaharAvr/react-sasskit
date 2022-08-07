@@ -1,6 +1,6 @@
-import _ from 'lodash';
+const _ = require('lodash');
 
-export default (Component, props) => {
+module.exports = (Component, props) => {
 
   if (!_.isFunction(Component)) {
     return Component;

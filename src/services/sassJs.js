@@ -1,5 +1,5 @@
 /* eslint-disable */
-import sassBlob from 'react-sasskit-blob';
+const sassBlob = require('react-sasskit-blob');
 
 const Sass = ((this, () => {
   
@@ -122,4 +122,4 @@ const Sass = ((this, () => {
   
 })());
 
-export default Sass;
+module.exports = Sass;

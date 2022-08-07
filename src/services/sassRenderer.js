@@ -1,5 +1,5 @@
-import _ from 'lodash';
-import SassJs from './sassJs';
+const _ = require('lodash');
+const SassJs = require('./sassJs');
 
 class SassRenderer {
 
@@ -90,4 +90,4 @@ class SassRenderer {
 
 }
 
-export default SassRenderer;
+module.exports = SassRenderer;

@@ -1,10 +1,10 @@
-import _ from 'lodash';
+const _ = require('lodash');
 
-export const STYLE_ELEMENT_ID = 'react-sasskit';
+const STYLE_ELEMENT_ID = 'react-sasskit';
 
-export const DEFALUT_CLASSNAME_PREFIX = _.upperFirst(STYLE_ELEMENT_ID);
+const DEFALUT_CLASSNAME_PREFIX = _.upperFirst(STYLE_ELEMENT_ID);
 
-export const DOM_ATTRIBUTES = [
+const DOM_ATTRIBUTES = [
   'children', 'dangerouslySetInnerHTML', 'onCopy', 'onCopyCapture',
   'onCut', 'onCutCapture', 'onPaste', 'onPasteCapture',
   'onCompositionEnd', 'onCompositionEndCapture', 'onCompositionStart', 'onCompositionStartCapture',
@@ -48,7 +48,7 @@ export const DOM_ATTRIBUTES = [
   'onTransitionEnd', 'onTransitionEndCapture',
 ];
 
-export const INTRINSIC_ELEMENTS = [
+const INTRINSIC_ELEMENTS = [
   'a', 'abbr', 'address', 'area',
   'article', 'aside', 'audio', 'b',
   'base', 'bdi', 'bdo', 'big',
@@ -95,7 +95,7 @@ export const INTRINSIC_ELEMENTS = [
   'tspan', 'use', 'view',
 ];
 
-export default {
+module.exports = {
   STYLE_ELEMENT_ID,
   DEFALUT_CLASSNAME_PREFIX,
   DOM_ATTRIBUTES,
