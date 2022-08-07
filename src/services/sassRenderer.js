@@ -54,8 +54,6 @@ class SassRenderer {
 
   render(newSuperClasses) {
 
-    debugger;
-
     if (!this.isInitialised) {
       return;
     }
