@@ -1,4 +1,5 @@
 /* eslint-disable */
+import sassBlob from 'react-sasskit-blob';
 
 const Sass = ((this, () => {
   
@@ -15,7 +16,6 @@ const Sass = ((this, () => {
       }
     }
 
-    const sassBlob = require('react-sasskit-blob');
     const blobUrl = URL.createObjectURL(sassBlob.init());
     const newSassWorker = new Worker(blobUrl);
 
@@ -122,4 +122,4 @@ const Sass = ((this, () => {
   
 })());
 
-module.exports = Sass;
+export default Sass;

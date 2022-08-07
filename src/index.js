@@ -1,10 +1,9 @@
-const React = require('react');
-const _ = require('lodash');
-
-const SassRenderer = require('./services/sassRenderer');
-const getInnerComponent = require('./utils/getInnerComponent');
-const generateSuperClass = require('./utils/generateSuperClass');
-const { DEFALUT_CLASSNAME_PREFIX, DOMAttributes, IntrinsicElements, STYLE_ELEMENT_ID } = require('./constants');
+import _ from 'lodash';
+import React from 'react';
+import SassRenderer from './services/sassRenderer';
+import getInnerComponent from './utils/getInnerComponent';
+import generateSuperClass from './utils/generateSuperClass';
+import { DEFALUT_CLASSNAME_PREFIX, DOM_ATTRIBUTES, INTRINSIC_ELEMENTS, STYLE_ELEMENT_ID } from './constants';
 
 class ReactSassKit {
 
@@ -15,7 +14,7 @@ class ReactSassKit {
   makeStyles(superClasses) {
 
     if (_.isEmpty(superClasses)) {
-      return {};
+        return {};
     }
   
     if (!_.isObject(superClasses)) {
@@ -74,7 +73,7 @@ class ReactSassKit {
           init({ children, ...props });
         }
 
-        const isDOMTypeElement = _.includes(IntrinsicElements, settings.finalComponentType);
+        const isDOMTypeElement = _.includes(INTRINSIC_ELEMENTS, settings.finalComponentType);
         if (isDOMTypeElement) {
           return React.createElement(
             settings.finalComponentType,
@@ -94,7 +93,7 @@ class ReactSassKit {
 
         return React.createElement(
           Component,
-          { ..._.pick(props, DOMAttributes), className: settings.className },
+          { ..._.pick(props, DOM_ATTRIBUTES), className: settings.className },
           children,
         );
 
@@ -106,4 +105,4 @@ class ReactSassKit {
 
 }
 
-module.exports = new ReactSassKit();
+export default new ReactSassKit();

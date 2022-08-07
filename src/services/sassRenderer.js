@@ -1,5 +1,5 @@
-const _ = require('lodash');
-const SassJs = require('./sassJs');
+import _ from 'lodash';
+import SassJs from './sassJs';
 
 class SassRenderer {
 
@@ -54,6 +54,8 @@ class SassRenderer {
 
   render(newSuperClasses) {
 
+    debugger;
+
     if (!this.isInitialised) {
       return;
     }
@@ -67,8 +69,8 @@ class SassRenderer {
     });
 
     const classesInnerHTML = _.chain(this.superClasses)
-      .reduce((res, cssStyle, className) => (
-        `${res}\n  .${className} {\n  ${cssStyle}\n}`
+      .reduce((res, cssStyle, key) => (
+        `${res}\n  ${/^[a-z]/i.test(key) ? `.${key}` : key} {\n  ${cssStyle}\n}`
       ), '')
       .trim()
       .value();
@@ -90,4 +92,4 @@ class SassRenderer {
 
 }
 
-module.exports = SassRenderer;
+export default SassRenderer;

@@ -1,8 +1,8 @@
-const _ = require('lodash');
-const md5 = require('md5');
-const interleave = require('./interleave');
+import _ from 'lodash';
+import md5 from 'md5';
+import interleave from './interleave';
 
-module.exports = ({ args, props, componentName, superClasses }) => {
+export default ({ args, props, componentName, superClasses }) => {
 
   const cssStyle = `${interleave({ args, props })}\n${_.get(superClasses, props.className, '')}`;
   const className = `${componentName}-${md5(cssStyle).substring(0, 5)}`;

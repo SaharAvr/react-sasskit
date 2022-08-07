@@ -1,6 +1,6 @@
-const _ = require('lodash');
+import _ from 'lodash';
 
-module.exports = ({ args, props }) => (
+export default ({ args, props }) => (
 
   _.reduce(args[0], (res, line, index) => {
 
